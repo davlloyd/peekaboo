@@ -1,3 +1,8 @@
-Creates a python web app using Flask to report details from the web client and local host
-Purpose of this test setup is to determine the visibility of the client details in a 
-Kubernetes deployment when fronted by a loadbalancer
+Function: Provides a web page that reports on the calling client identity details and general data
+Purpose:  To determine data that is passed through to server directly and via Proxies and Load balancers
+
+Comment:
+This is setuop to be containerised and deployed into a Kubernetes cluster. It was writtent to determine
+what is passed through by Kubernetes Services and Ingress controllers to help with scenerios like 
+feature set support and enablement as well as network policies
+
