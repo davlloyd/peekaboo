@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webclient-reporter
+  labels:
+    app: webreporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webreporter
+  template:
+    metadata:
+      labels:
+        app: webreporter
+    spec:
+      containers:
+      - name: webreporter
+        image: davlloyd/clientreport:7
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80

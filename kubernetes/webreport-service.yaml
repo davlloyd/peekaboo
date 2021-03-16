@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: webreporter-svc
+  labels:
+    app: webreporter-svc
+spec:
+  ports:
+    # the port that this service should serve on
+    - port: 80
+  selector:
+    app: webreporter
+  sessionAffinity: ClientIP
+  type: LoadBalancer
+
