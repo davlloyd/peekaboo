@@ -4,6 +4,9 @@ metadata:
   name: webreporter
   labels:
     app: webreporter
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: web-reporter-caas1.apps.home.local
+    external-dns.alpha.kubernetes.io/ttl: "60"
 spec:
   ports:
     # the port that this service should serve on
@@ -12,4 +15,5 @@ spec:
     app: webreporter
   sessionAffinity: ClientIP
   type: LoadBalancer
+
 

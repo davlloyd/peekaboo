@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: webreport-frontend
+  annotations:
+    kubernetes.io/ingress.class: "contour"
+spec:
+  rules:
+  - host: webreport.caas1.home.local
+    http:
+      paths:
+      - backend:
+          serviceName: webreporter
+          servicePort: 80
+          
