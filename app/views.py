@@ -1,5 +1,9 @@
+import datetime
+from email.utils import localtime
 import socket
 import os
+from time import gmtime, mktime
+from datetime import datetime
 from flask import request
 from flask import jsonify
 from flask import render_template
@@ -40,3 +44,9 @@ def main():
 
     return render_template('index.html', requestip=requestip, xrealip=xrealip, headerdata=headerdata, hostname=hostname, xffheader=xffheader, environdata=environdata)
 
+@app.route('/time', methods=["GET"])
+def timeInfo():
+    servertime = datetime.utcnow()
+    tupletime = servertime.timetuple()
+    ticker = mktime(tupletime)
+    return render_template('response.html', servertime=servertime, ticker=ticker) 

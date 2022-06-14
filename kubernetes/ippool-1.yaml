@@ -1,0 +1,12 @@
+apiVersion: "crd.antrea.io/v1alpha2"
+kind: IPPool
+metadata:
+  name: pool1
+spec:
+  ipVersion: 4
+  ipRanges:
+  - start: "10.2.0.12"
+    end: "10.2.0.20"
+    gateway: "10.2.0.1"
+    prefixLength: 24
+

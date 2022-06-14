@@ -11,6 +11,6 @@ spec:
     app: webreporter
   sessionAffinity: ClientIP
   type: LoadBalancer
-  loadBalancerIP: 172.16.1.222
+  loadBalancerIP: 10.20.12.10
 
 

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <script>
+    var diff;
+
+    getTimeDiff();
+
+    function getTimeDiff(){
+      var currentTime = Date.now();
+      var serverTime = $servertime;
+      diff = (currentTime - serverTime);
+    }
+    
+  </script>
+
+  {{ servertime }}
+  <br><br>
+  {{ ticker }}
+  <br><br>
+
+  
+{% endblock %}
+
