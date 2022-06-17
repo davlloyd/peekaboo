@@ -21,4 +21,4 @@ k8s_custom_deploy(
 k8s_resource('clientcapture', port_forwards=["8080:8080"],
             extra_pod_selectors=[{'serving.knative.dev/service': 'clientcapture'}])
 
-allow_k8s_contexts('gke_lloyd-266015_australia-southeast1_tap-aus-1')
+allow_k8s_contexts('tap-aus-1')
