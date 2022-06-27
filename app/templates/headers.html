@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <script>
+
+        function headerDataDisplay() {
+            var displayToggle = document.getElementById("showHeaderData");
+
+            if (displayToggle.checked) {
+                document.getElementById('header').style.display = "block";
+            } else {
+                document.getElementById('header').style.display = "none";
+            }
+        }
+
+        function environDataDisplay() {
+            var displayToggle = document.getElementById("showEnvironData");
+
+            if (displayToggle.checked) {
+                document.getElementById('environ').style.display = "block";
+            } else {
+                document.getElementById('environ').style.display = "none";
+            }
+        }
+
+    </script>
+
+    <h2>Web Client Headers</h2>
+    <br>
+    <center>
+        <table width=50% border="1px">
+            <thead>
+                <tr align=left>
+                    <th>Source</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>XFF Header IP</td>
+                    <td>{{ xffheader }}</td>
+                </tr>
+                <tr>
+                    <td>X Real IP</td>
+                    <td>{{ xrealip }}</td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <br>
+        <table width=300px>
+            <tr>
+                <td>Show Header Data</td>
+                <td>
+                    <input type="checkbox" id="showHeaderData" onchange="headerDataDisplay();">
+                </td>
+            </tr>
+            <tr>
+                <td>Show WSGI Environment Data</td>
+                <td>
+                    <input type="checkbox" id="showEnvironData" onchange="environDataDisplay();">
+                </td>
+            </tr>
+        </table>
+
+        <br>
+
+        <div id="header" style="display: none;">
+            <br>
+            <table width=50% border="1px">
+                <tr><td colspan="2" style="text-align: center;">Headers</td></tr>
+                <tr>
+                    <td>{{ headerdata }}</td>
+                </tr>
+            </table>
+        
+        </div>
+
+        <br>
+        
+        <div id="environ" style="display: none;">
+            <br>
+            <table width=50% border="1px">
+                <tr><td colspan="2" style="text-align: center;">WSGI Environment</td></tr>
+                <tr>
+                    <td>{{ environdata }}</td>
+                </tr>
+            </table>
+        
+        </div>
+
+    </center>
+
+{% endblock %}

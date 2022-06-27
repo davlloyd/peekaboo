@@ -19,6 +19,12 @@ def main():
     else:
         requestip = "Not Set"
 
+    return render_template('index.html', requestip=requestip, hostname=hostname)
+
+@app.route('/headers', methods=["GET"])
+def headers():
+    # Get general values
+
     if request.headers:
         headerdata=request.headers
 
@@ -42,7 +48,16 @@ def main():
     else:
         environdata = "Not Set"
 
-    return render_template('index.html', requestip=requestip, xrealip=xrealip, headerdata=headerdata, hostname=hostname, xffheader=xffheader, environdata=environdata)
+    return render_template('headers.html', xrealip=xrealip, headerdata=headerdata, xffheader=xffheader, environdata=environdata)
+
+
+@app.route('/variables', methods=["GET"])
+def variables():
+    _vars={}
+    for _key in os.environ:
+        _vars[_key] = os.environ[_key]
+    return render_template('variables.html', servervars=_vars)
+
 
 @app.route('/time', methods=["GET"])
 def timeInfo():

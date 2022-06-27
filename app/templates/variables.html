@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+    <h2>Server and Client Variable Report</h2>
+    <br>
+    <center>
+        <table style="width:60%">
+            <thead>
+                <tr align=left>
+                    <th>Source</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="vertical-align:text-top">Server</td>
+                    <td style>
+                        <table style="width:40%">
+                        {% for _key in servervars %}
+                            <tr><td>{{ _key }}</td><td>{{ servervars[_key] }}</td></tr>
+                        {% endfor %}                        
+                        </table>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>Client</td>
+                    <td><a id='clientenv'></a></td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <br>
+
+    </center>
+
+    <script>
+        let _vars = {{servervars}};
+        let _table = "<table>";
+
+        for (_key in _vars){
+            _table += "<tr>"
+            _table += "<td>" + _key + "</td>";
+            _table += "<td>" + _vars[_key] + "</td>"
+            _table += "</tr>"
+        }
+
+        //clientenv = process.env.local;
+        clientenv = "test";
+        _table += "</table>";
+        document.getElementById('clientenv').innerHTML = clientenv;
+
+    </script>
+{% endblock %}
