@@ -89,6 +89,10 @@ h3 {
   color: #999;
 }
 
+th {
+  background-color: #999;
+}
+
 table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
