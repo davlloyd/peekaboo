@@ -9,9 +9,14 @@ spec:
   params:
   - name: annotations
     value:
-      autoscaling.knative.dev/minScale: "0"
+      autoscaling.knative.dev/min-scale: "0"
       autoscaling.knative.dev/max-scale: "50"
-      autoscaling.knative.dev/scale-down-delay: "3s"
+      autoscaling.knative.dev/scale-down-delay: "2s"
+      autoscaling.knative.dev/initial-scale: "0"
+      autoscaling.knative.dev/window: "10s"
+      autoscaling.knative.dev/target: "40"
+      autoscaling.knative.dev/metric: "rps"
+      autoscaling.knative.dev/target: "60"
   source:
     git:
       url: https://github.com/davlloyd/clientcapture-python
