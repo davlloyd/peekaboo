@@ -1,13 +1,10 @@
-accelerator:
-  displayName: web-client-report
-  description: Python script that provides the header and id info from a calling web client
-  iconUrl: https://raw.githubusercontent.com/simple-starters/icons/master/icon-tanzu-light.png
-  tags: []
-  options:
-  - name: optionName
-    label: Nice Label
-    display: true
-    defaultValue: ""
-engine:
-  include:
-  - '**'
+apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Accelerator
+metadata:
+  name: web-client-report
+  namespace: accelerator-system
+spec:
+  git:
+    url: https://github.com/davlloyd/clientcapture-python
+    ref:
+      branch: main
