@@ -1,0 +1,33 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: clientcapture
+  labels:
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/part-of: clientcapture
+spec:
+  params:
+  - name: annotations
+    value:
+      autoscaling.knative.dev/min-scale: "10"
+      autoscaling.knative.dev/max-scale: "50"
+      autoscaling.knative.dev/scale-down-delay: "2s"
+      autoscaling.knative.dev/initial-scale: "1"
+      autoscaling.knative.dev/window: "10s"
+      autoscaling.knative.dev/target: "40"
+      autoscaling.knative.dev/metric: "rps"
+      autoscaling.knative.dev/target: "60"
+  source:
+    git:
+      url: https://github.com/davlloyd/clientcapture-python
+      ref:
+        branch: main
+  serviceClaims:
+    - name: clientcapture-db
+      ref:
+        apiVersion: v1
+        kind: Secret
+        name: clientcapture-db
+  env:
+  - name: USERENV
+    value: test

@@ -1,16 +1,14 @@
 import datetime
-from email.utils import localtime
 import socket
 import os
-from time import gmtime, mktime
+import time
 from datetime import datetime
-from flask import request
-from flask import jsonify
-from flask import render_template
-from app import app
+from flask import Blueprint, current_app, render_template, request, jsonify
 
-@app.route('/', methods=["GET"])
-def main():
+main = Blueprint("main", __name__)
+
+@main.route('/', methods=["GET"])
+def home():
     # Get general values
     hostname = socket.getfqdn()
 
@@ -19,9 +17,9 @@ def main():
     else:
         requestip = "Not Set"
 
-    return render_template('index.html', requestip=requestip, hostname=hostname)
+    return render_template('home.html', requestip=requestip, hostname=hostname, env=current_app.config['ENV'])
 
-@app.route('/headers', methods=["GET"])
+@main.route('/headers', methods=["GET"])
 def headers():
     # Get general values
 
@@ -51,7 +49,7 @@ def headers():
     return render_template('headers.html', xrealip=xrealip, headerdata=headerdata, xffheader=xffheader, environdata=environdata)
 
 
-@app.route('/variables', methods=["GET"])
+@main.route('/variables', methods=["GET"])
 def variables():
     _vars={}
     for _key in os.environ:
@@ -59,9 +57,36 @@ def variables():
     return render_template('variables.html', servervars=_vars)
 
 
-@app.route('/time', methods=["GET"])
+@main.route('/time', methods=["GET"])
 def timeInfo():
     servertime = datetime.utcnow()
     tupletime = servertime.timetuple()
     ticker = mktime(tupletime)
     return render_template('response.html', servertime=servertime, ticker=ticker) 
+
+@main.route('/bindings', methods=["GET"])
+def bindings():
+    currentDir = os.getcwd()
+    bindingFound = False
+    bindingvals={}
+    if os.path.exists("bindings"):
+        bindingFound=True
+        for _file in os.listdir('bindings'):
+            bindingFolder = currentDir + "/bindings/" + _file
+            bindingvals["Binding"] = _file
+            for _key in os.listdir(bindingFolder):
+                valueFile = bindingFolder + "/" + _key
+                _value = open(valueFile)
+                bindingvals[_key] = _value.read()
+                _value.close()
+    
+    return render_template('bindings.html', currentDir=currentDir, bindingFound=bindingFound, bindingvals=bindingvals, dburl=current_app.config['SQLALCHEMY_DATABASE_URI'])
+
+@main.errorhandler(404)
+def page_not_found(_err):
+    return render_template('404.html')
+
+@main.errorhandler(500)
+def page_not_found(_err):
+    return render_template('500.html')
+    

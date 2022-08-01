@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+    <h2>Binding Details</h2>
+    <br>
+    <center>
+        <table style="width:60%">
+            <thead>
+                <tr align=left>
+                    <th>Key</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="vertical-align:text-top">Current Directory</td>
+                    <td>
+                        {{currentDir}}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:text-top">Binding Found</td>
+                    <td>
+                        {{bindingFound}}
+                    </td>
+                </tr>
+
+                {% if bindingFound %}
+
+                <tr>
+                    <td style="vertical-align:text-top">Values</td>
+                    <td>
+
+                        <table style="width:40%">
+                            {% for _key in bindingvals %}
+                                <tr><td>{{ _key }}</td><td>{{ bindingvals[_key] }}</td></tr>
+                            {% endfor %}                        
+                        </table>
+                    
+                    </td>
+                </tr>
+
+                {% endif %}
+                <tr>
+                    <td>Connected</td>
+                    <td><a id='clientenv'></a></td>
+                </tr>
+                <tr>
+                    <td>Database URL</td>
+                    <td> {{dburl}} </td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <br>
+
+    </center>
+
+{% endblock %}
