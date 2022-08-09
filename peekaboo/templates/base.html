@@ -1,9 +1,9 @@
 <html>
     <head>
       {% if title %}
-      <title>Client Detail Report - {{ title }}</title>
+      <title>Peekaboo Web - {{ title }}</title>
       {% else %}
-      <title>Client Detail Report</title>
+      <title>Peekaboo Web</title>
       {% endif %}
 
       <meta charset="utf-8">
@@ -13,6 +13,7 @@
 
     <header>
       <div class="container">
+        <img style="width:30px;height:30px;position:absolute" src="{{ url_for('static', filename='images/peekaboo_logo_medium.png') }}">
         <strong>
           <nav>
             <ul class="menu">
@@ -20,15 +21,17 @@
               <li><a href="{{ url_for('main.headers') }}">Headers</a></li>
               <li><a href="{{ url_for('main.variables') }}">Variables</a></li>
               <li><a href="{{ url_for('main.bindings') }}">Bindings</a></li>
+              <li><a href="{{ url_for('main.history') }}">History</a></li>
             </ul>
           </nav>
         </strong>
-        <h1 class="logo">Web Client Insight</h1>
+        <h3>Peekaboo Web</h3>
       </div>
       
     </header>
 
     <body>
+      
       {% block content %}{% endblock %}
 
     </body>

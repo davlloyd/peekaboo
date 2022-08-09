@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <center>
+        <br>
+        <h1>Internal Server Error</h1>
+        <br>
+        {{error_description}}
+
+
+        <br>
+        <img src="{{ url_for('static', filename='images/broken-tooth-grin.png') }}">
+        <br>
+    </center>
+
+</div>
+{% endblock %}

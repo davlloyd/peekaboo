@@ -36,7 +36,7 @@ class Binding:
                         self.PASSWORD = open(valueFile).read()
                         i = i + 1
             if i >= 4:
-                self.SQLALCHEMY_DATABASE_URI = f"mysql://{self.USERNAME}:{self.PASSWORD}@{self.HOST}:{self.PORT}/{self.DATABASE}"
+                self.SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{self.USERNAME}:{self.PASSWORD}@{self.HOST}:{self.PORT}/{self.DATABASE}"
                 return self.SQLALCHEMY_DATABASE_URI
             else:
                 return None
@@ -47,7 +47,7 @@ class Binding:
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'secret'
     WORKDIR = basedir
-    SERVICE_BINDING = 'clientcapture-binding'
+    SERVICE_BINDING = 'peekaboo-binding'
     BINDING_ASSIGNED = False
     BINDING_FOLDER = WORKDIR + "/bindings/" + SERVICE_BINDING
     ENV = 'unset'
@@ -66,7 +66,7 @@ class ProductionConfig(Config):
             _binding = Binding()
             SQLALCHEMY_DATABASE_URI = _binding.getDBURL(Config.BINDING_FOLDER)
         else:
-            SQLALCHEMY_DATABASE_URI = 'mysql://user@localhost/whatever'    
+            SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://user@localhost/whatever'    
 
 class DevelopmentConfig(Config):
     DEBUG = True

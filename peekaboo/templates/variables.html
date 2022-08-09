@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+    <h2>Backend Environment Report</h2>
+    <br>
+    <center>
+        <table style="width:60%">
+            <thead>
+                <tr align=left>
+                    <th>Variable</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                {% for _key in servervars %}
+                    <tr><td>{{ _key }}</td><td>{{ servervars[_key] }}</td></tr>
+                {% endfor %}                        
+
+            </tbody>
+        </table>
+
+        <br>
+
+    </center>
+
+
+{% endblock %}

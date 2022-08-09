@@ -8,7 +8,7 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "reporter.py",
+            "program": "run.py",
             "console": "integratedTerminal",
             "justMyCode": true
         },
@@ -18,7 +18,7 @@
             "request": "launch",
             "module": "flask",
             "env": {
-                "FLASK_APP": "reporter.py",
+                "FLASK_APP": "run.py",
                 "FLASK_ENV": "development"
             },
             "args": [

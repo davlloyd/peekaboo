@@ -1,1 +1,1 @@
-web: python reporter.py
+web: python run.py

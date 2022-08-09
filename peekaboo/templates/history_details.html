@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<script>
+
+    function headersDisplay() {
+        var displayToggle = document.getElementById("showHeaders");
+
+        if (displayToggle.checked) {
+            document.getElementById('header').style.display = "block";
+        } else {
+            document.getElementById('header').style.display = "none";
+        }
+    }
+
+    function environDisplay() {
+        var displayToggle = document.getElementById("showEnviron");
+
+        if (displayToggle.checked) {
+            document.getElementById('environ').style.display = "block";
+        } else {
+            document.getElementById('environ').style.display = "none";
+        }
+    }
+
+    function wsgiDisplay() {
+        var displayToggle = document.getElementById("showWSGI");
+
+        if (displayToggle.checked) {
+            document.getElementById('wsgi').style.display = "block";
+        } else {
+            document.getElementById('wsgi').style.display = "none";
+        }
+    }
+
+</script>
+
+<div class="page-header">
+
+    <center>
+        <br>
+        <h1>Historic Request Details</h1>
+        <br>
+
+        <table width=50% border="1px">
+            <thead>
+                <tr align=left>
+                    <th>Item</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Time</td>
+                    <td>{{ request.timestamp }}</td>
+                </tr>
+                <tr>
+                    <td>ID</td>
+                    <td>{{ requestid }}</td>
+                </tr>
+                <tr>
+                    <td>IP Address</td>
+                    <td>{{ request.ipaddress }}</td>
+                </tr>
+                <tr>
+                    <td>XFF Header IP</td>
+                    <td>{{ request.xff }}</td>
+                </tr>
+                <tr>
+                    <td>X Real IP</td>
+                    <td>{{ request.xrealip }}</td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <br>
+        <table width=300px>
+            <tr>
+                <td>Show Header Data</td>
+                <td>
+                    <input type="checkbox" id="showHeaders" onchange="headersDisplay();">
+                </td>
+            </tr>
+            <tr>
+                <td>Show WSGI Environment Data</td>
+                <td>
+                    <input type="checkbox" id="showWSGI" onchange="wsgiDisplay();">
+                </td>
+            </tr>
+            <tr>
+                <td>Show Backend Environment Data</td>
+                <td>
+                    <input type="checkbox" id="showEnviron" onchange="environDisplay();">
+                </td>
+            </tr>
+        </table>
+
+        <br>
+
+        <div id="header" style="display: none;">
+            <br>
+            <table width=50% border="1px">
+                <tr><th colspan="2" style="text-align: center;">Headers</th></tr>
+                <tr><th>Header</th><th>Value</th></tr>
+                <tbody>
+                    
+                    {% for header in headers %}
+                        <tr><td>{{ header.name }}</td><td>{{ header.value }}</td></tr>
+                    {% endfor %}                        
+    
+                </tbody>
+            </table>
+        
+        </div>
+
+        <br>
+        
+        <div id="wsgi" style="display: none;">
+            <br>
+            <table width=50% border="1px">
+                <tr><th colspan="2" style="text-align: center;">WSGI Environment</th></tr>
+                <tr><th>Variable</th><th>Value</th></tr>
+                <tbody>
+                    
+                    {% for vars in webvars %}
+                        <tr><td>{{ vars.name }}</td><td>{{ vars.value }}</td></tr>
+                    {% endfor %}                        
+    
+                </tbody>
+            </table>
+        </div>
+
+        <br>
+        
+        <div id="environ" style="display: none;">
+            <br>
+            <table width=50% border="1px">
+                <tr><th colspan="2" style="text-align: center;">Backend Environment</th></tr>
+                <tr><th>Variable</th><th>Value</th></tr>
+                <tbody>
+                    
+                    {% for vars in osvars %}
+                        <tr><td>{{ vars.name }}</td><td>{{ vars.value }}</td></tr>
+                    {% endfor %}                        
+    
+                </tbody>
+            </table>
+        </div>
+
+        <br>
+    </center>
+
+</div>
+{% endblock %}
+

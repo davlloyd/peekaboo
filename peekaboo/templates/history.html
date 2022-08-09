@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h2>Past Responses</h2>
+    <br>
+    <center>
+      <table id="data">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>IPAddress</th>
+            <th>RealIP</th>
+            <th>XFF</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for request in requests %}
+            <tr>
+              <td>{{ request.timestamp }}</td>
+              <td>{{ request.ipaddress }}</td>
+              <td>{{ request.xrealip }}</td>
+              <td>{{ request.xff }}</td>
+              <td>
+                <a href="/history/{{ request.id }}">
+                  <img style="width:30px;height:30px" src="{{ url_for('static', filename='images/details.png') }}">
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </center>
+
+
+
+{% endblock %}

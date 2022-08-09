@@ -1,10 +1,11 @@
 SOURCE_IMAGE = os.getenv("SOURCE_IMAGE", default='.')
 LOCAL_PATH = os.getenv("LOCAL_PATH", default='.')
 NAMESPACE = os.getenv("NAMESPACE", default='alpha')
-APP_NAME = "clientcapture"
+APP_NAME = "peekaboo"
+K8S_CONTEXT = os.getenv("K8S_CONTEXT", default="tap-aus-1")
 
 local_resources(
-    'clientcapture',
+    APP_NAME,
     'date +%s > start-time.txt'
 )
 
@@ -25,7 +26,7 @@ k8s_custom_deploy(
     ]
 )
 
-k8s_resource('clientcapture', port_forwards=["80:80"],
-            extra_pod_selectors=[{'serving.knative.dev/service': 'clientcapture'}])
+k8s_resource(APP_NAME, port_forwards=["80:80"],
+            extra_pod_selectors=[{'serving.knative.dev/service': APP_NAME}])
 
-allow_k8s_contexts('tap-aus-1')
+allow_k8s_contexts(K8S_CONTEXT)

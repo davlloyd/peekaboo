@@ -1,18 +1,18 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from . import config
-from app.main.session import main
+from peekaboo import config
 
-app = Flask(__name__)
 db = SQLAlchemy()
+app = Flask(__name__)
 
 def create_app(config_name):
     app.config.from_object(config.config[config_name])
     config.config[config_name].init_app(app)
     db.init_app(app)
 
-    app.register_blueprint(main)
 
+    from peekaboo.main import main as main_blueprint
+    app.register_blueprint(main_blueprint)
 
     return app
 

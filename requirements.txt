@@ -2,3 +2,5 @@ Flask
 flask_sqlalchemy
 flask_bootstrap
 flask_migrate
+pymysql
+mysqldbmodel

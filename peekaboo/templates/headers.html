@@ -70,10 +70,15 @@
         <div id="header" style="display: none;">
             <br>
             <table width=50% border="1px">
-                <tr><td colspan="2" style="text-align: center;">Headers</td></tr>
-                <tr>
-                    <td>{{ headerdata }}</td>
-                </tr>
+                <tr><th colspan="2" style="text-align: center;">Headers</th></tr>
+                <tr><th>Header</th><th>Value</th></tr>
+                <tbody>
+                    
+                    {% for _key in headerdata %}
+                        <tr><td>{{ _key }}</td><td>{{ headerdata[_key] }}</td></tr>
+                    {% endfor %}                        
+    
+                </tbody>
             </table>
         
         </div>
@@ -83,10 +88,15 @@
         <div id="environ" style="display: none;">
             <br>
             <table width=50% border="1px">
-                <tr><td colspan="2" style="text-align: center;">WSGI Environment</td></tr>
-                <tr>
-                    <td>{{ environdata }}</td>
-                </tr>
+                <tr><th colspan="2" style="text-align: center;">WSGI Environment</th></tr>
+                <tr><th>Variable</th><th>Value</th></tr>
+                <tbody>
+                    
+                    {% for _key in webenvirondata %}
+                        <tr><td>{{ _key }}</td><td>{{ webenvirondata[_key] }}</td></tr>
+                    {% endfor %}                        
+    
+                </tbody>
             </table>
         
         </div>
