@@ -2,9 +2,24 @@
 
 {% block content %}
 
+  <form method="post" action="/history">
     <h2>Past Responses</h2>
     <br>
     <center>
+      <br>
+      Select Client: 
+      <select name="client" id="client" class="main-select" onchange="this.form.submit()">
+        {% for _client in clients %}
+          {% if _client.id == clientid %}
+            <option value={{ _client.id }} selected>{{ _client.hostname }}</option>
+          {% else %}
+            <option value={{ _client.id }}>{{ _client.hostname }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+      <br>
+      <br>
+
       <table id="data">
         <thead>
           <tr>
@@ -33,6 +48,6 @@
       </table>
     </center>
 
-
+  </form>
 
 {% endblock %}

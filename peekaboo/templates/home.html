@@ -5,7 +5,7 @@
     <h2>What Your Browser Says</h2>
     <br>
     <center>
-        <table width=50% border="1px">
+        <table width="500" border="1px">
             <thead>
                 <tr align=left>
                     <th>Source</th>
@@ -17,10 +17,7 @@
                     <td>Server Hostname</td>
                     <td>{{ hostname }}</td>
                 </tr>
-                <tr>
-                    <td>Client Hostname</td>
-                    <td><p id="clientname"></p></td>
-                </tr>
+
                 <tr>
                     <td>Request Client IP</td>
                     <td>{{ requestip }}</td>
@@ -32,24 +29,40 @@
 
             </tbody>
         </table>
-
-        <br>
+        <br><br><br>
+        <canvas id="demandchart" width="400" height="400"></canvas>
 
     </center>
 
 
     <script>
 
-        function getosname(){
-            let os = require('os');
-            var clientname = os.hostname(); 
-            alert(clientname);
-
-            document.getElementById("clientname").innerHTML = clientname;
-            getosname=clientname;
-        }
-
-        getosname();
+        var _var = {{ dailyhits|tojson }}
+        _var = JSON.parse(_var)
+        const ctx = document.getElementById('demandchart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    label: 'Daily Sessions',
+                    data: _var,
+                    backgroundColor: '#0000FF',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                parsing: {
+                    xAxisKey: 'Date',
+                    yAxisKey: 'Sessions'
+                },
+                responsive: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
 
     </script>
 

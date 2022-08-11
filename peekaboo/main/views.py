@@ -8,6 +8,7 @@ from . import main,  session
 from peekaboo import db
 from peekaboo.data.models import Request, Client, Headers, OSEnvironment, WebEnvironment
 
+
 _session = session.SessionData()
 
 @main.route('/', methods=["GET"])
@@ -15,7 +16,9 @@ def home():
     if not _session.LOADED:
         _session.load()
 
-    return render_template('home.html', requestip=_session.IPADDRESS, hostname=_session.FQDN, env=current_app.config['ENV'])
+    _requests = Request.get_dailycount_json()
+
+    return render_template('home.html', requestip=_session.IPADDRESS, hostname=_session.FQDN, env=current_app.config['ENV'], dailyhits=_requests)
 
 @main.route('/headers', methods=["GET"])
 def headers():
@@ -47,14 +50,19 @@ def bindings():
     
     return render_template('bindings.html', currentDir=os.getcwd(), bindingFound=_session.BINDINGFOUND, bindingvals=_session.BINDINGS, dburl=current_app.config['SQLALCHEMY_DATABASE_URI'])
 
-@main.route('/history', methods=["GET"])
+@main.route('/history', methods=["GET", "POST"])
 def history():
-    if not _session.LOADED:
-        _session.load()
-    
-    _requests = Request.get_history(_session.CLIENTID)
+    _clients = Client.query.all()
+    if request.method == "POST":
+         _clientid = int(request.form["client"])
+    else:
+        if not _session.LOADED:
+            _session.load()
+        _clientid = _session.CLIENTID
 
-    return render_template('history.html', requests=_requests)
+    _requests = Request.get_history(_clientid)
+
+    return render_template('history.html', clients=_clients, requests=_requests, clientid=_clientid)
 
 
 @main.route('/history/<requestid>', methods=["GET"])

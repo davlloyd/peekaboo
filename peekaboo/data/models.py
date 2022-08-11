@@ -1,9 +1,12 @@
 from email.header import Header
+from flask import jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from peekaboo import db, app
 from sqlalchemy.dialects.mysql import insert
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.inspection import inspect
+import json
 
 class Client(db.Model):
     __tablename__ = 'client'
@@ -67,6 +70,21 @@ class Request(db.Model):
     def get_history(clientid):
         _history = Request.query.filter(Request.client_id == clientid).all()
         return _history
+
+    @staticmethod
+    def get_dailycount_json():
+        _sql = "SELECT DATE(`timestamp`) AS 'date',COUNT(*) AS 'sessions' "
+        _sql += "FROM peekaboo.requests "
+        _sql += "GROUP BY DATE(`timestamp`);"
+        _report = db.engine.execute(_sql)
+
+        _json = []
+        for _row in _report:
+            _json.append({'Date': _row.date.isoformat(),
+                          'Sessions': _row.sessions})
+   
+        return json.dumps(_json)
+
 
 
 class Headers(db.Model):
@@ -136,6 +154,23 @@ class OSEnvironment(db.Model):
     def get_list(requestid):
         _list = OSEnvironment.query.filter(OSEnvironment.request_id == requestid).all()
         return _list
+
+
+class JSONSerializer(json.JSONEncoder):
+    @staticmethod
+    def convert_if_date(_date):
+        if isinstance(_date, datetime.date):
+            return _date.strftime('%Y-%m-%d')
+        return _date
+
+    def date_insensitive_encode(self, obj):
+        if isinstance(obj, dict):
+            return {self.convert_if_date(k): v for k, v in obj.items()}
+        return obj
+
+    def encode(self, obj):
+        return super(JSONSerializer, self).encode(
+            self.date_insensitive_encode(obj))
 
 
 
