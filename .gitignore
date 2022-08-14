@@ -1,7 +1,7 @@
 /.vscode/
 __pycache__/
 /test/
-/bindings/
+/bindings*
 start-time.txt
 *.pyc
 instance/
@@ -11,3 +11,4 @@ htmlcov/
 dist/
 build/
 *.egg-info/
+data.sqllite

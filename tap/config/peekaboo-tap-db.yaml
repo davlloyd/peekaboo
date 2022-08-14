@@ -2,14 +2,14 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: clientcapture-db
+  name: peekaboo-db
 type: servicebinding.io/mysql
 stringData:
   type: mysql
   provider: mariadb
-  host: clientcapture-db
+  host: peekaboo-db
   port: "3306"
-  database: clientcapture
+  database: peekaboo
   # demo credentials
   username: user
   password: pass
@@ -19,29 +19,29 @@ stringData:
 apiVersion: v1
 kind: Service
 metadata:
-  name: clientcapture-db
+  name: peekaboo-db
 spec:
   type: LoadBalancer
   ports:
   - port: 3306
   selector:
-    app: clientcapture-db
+    app: peekaboo-db
   
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: clientcapture-db
+  name: peekaboo-db
   labels:
-    app: clientcapture-db
+    app: peekaboo-db
 spec:
   selector:
     matchLabels:
-      app: clientcapture-db
+      app: peekaboo-db
   template:
     metadata:
       labels:
-        app: clientcapture-db
+        app: peekaboo-db
     spec:
       # no persistance configured, the database will be reset when the pod terminates
       containers:
@@ -51,17 +51,17 @@ spec:
         - name: MYSQL_USER
           valueFrom:
             secretKeyRef:
-              name: clientcapture-db
+              name: peekaboo-db
               key: username
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: clientcapture-db
+              name: peekaboo-db
               key: password
         - name: MYSQL_DATABASE
           valueFrom:
             secretKeyRef:
-              name: clientcapture-db
+              name: peekaboo-db
               key: database
         - name: MYSQL_ROOT_PASSWORD
           value: root

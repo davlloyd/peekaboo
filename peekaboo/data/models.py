@@ -73,14 +73,19 @@ class Request(db.Model):
 
     @staticmethod
     def get_dailycount_json():
+        # Determining the structure between sqllite and mysql as schema context in queries vary
         _sql = "SELECT DATE(`timestamp`) AS 'date',COUNT(*) AS 'sessions' "
-        _sql += "FROM peekaboo.requests "
+        _sql += "FROM requests "
         _sql += "GROUP BY DATE(`timestamp`);"
         _report = db.engine.execute(_sql)
 
         _json = []
         for _row in _report:
-            _json.append({'Date': _row.date.isoformat(),
+            if app.config['SQLALCHEMY_DATABASE_URI'].startswith('mysql'):
+                _date = _row.date.isoformat()
+            else:
+                _date = _row.date
+            _json.append({'Date': _date,
                           'Sessions': _row.sessions})
    
         return json.dumps(_json)
