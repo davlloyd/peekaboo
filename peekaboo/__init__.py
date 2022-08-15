@@ -11,10 +11,7 @@ def create_app(config_name):
     config.config[config_name].init_app(app)
     db.init_app(app)
 
-    app.config['SQLALCHEMY_DATABASE_URI']
-    print(app.config['SQLALCHEMY_DATABASE_URI'], file=sys.stdout)
-
-
+    print('Import blueprints', file=sys.stdout)
     from peekaboo.main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 

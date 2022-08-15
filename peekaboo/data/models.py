@@ -7,6 +7,9 @@ from sqlalchemy.dialects.mysql import insert
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.inspection import inspect
 import json
+import sys
+
+print('Define DB Models', file=sys.stdout)
 
 class Client(db.Model):
     __tablename__ = 'client'
@@ -178,7 +181,7 @@ class JSONSerializer(json.JSONEncoder):
             self.date_insensitive_encode(obj))
 
 
-
+print('Create DB', file=sys.stdout)
 with app.app_context():
     db.create_all()
     db.session.commit()

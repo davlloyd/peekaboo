@@ -2,8 +2,9 @@ from operator import gt
 import os
 from os import path
 import this
-
+import sys
 from flask import current_app
+
 basedir = os.getcwd()
 
 class Binding:
@@ -15,7 +16,10 @@ class Binding:
     SQLALCHEMY_DATABASE_URI = ""
  
     def getDBURL(self, bindingFolder):    
+        print('Binding folder: ' + bindingFolder, file=sys.stdout)
+
         if path.exists(bindingFolder):
+            print('Binding found', file=sys.stdout)
             i = 0
             for _key in os.listdir(bindingFolder):
                 valueFile = bindingFolder + "/" + _key
@@ -37,6 +41,8 @@ class Binding:
                         i = i + 1
             if i >= 4:
                 self.SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{self.USERNAME}:{self.PASSWORD}@{self.HOST}:{self.PORT}/{self.DATABASE}"
+                print('Binding DB URI: ' + self.SQLALCHEMY_DATABASE_URI, file=sys.stdout)
+
                 return self.SQLALCHEMY_DATABASE_URI
             else:
                 return None
@@ -60,6 +66,7 @@ class Config:
 
 
 class ProductionConfig(Config):
+    print('Production environment set', file=sys.stdout)
     ENV = 'production'
     if Config.SQLALCHEMY_DATABASE_URI is None:
         if path.exists(Config.BINDING_FOLDER):
@@ -69,6 +76,7 @@ class ProductionConfig(Config):
             SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://user@localhost/whatever'    
 
 class DevelopmentConfig(Config):
+    print('Development environment set', file=sys.stdout)
     DEBUG = True
     ENV = 'development'
     if Config.SQLALCHEMY_DATABASE_URI is None:
@@ -80,6 +88,7 @@ class DevelopmentConfig(Config):
 
 
 class TestingConfig(Config):
+    print('Testing environment set', file=sys.stdout)
     TESTING = True
     ENV = 'testing'
     if Config.SQLALCHEMY_DATABASE_URI is None:
