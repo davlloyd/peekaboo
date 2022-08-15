@@ -85,7 +85,7 @@ class DevelopmentConfig(Config):
             SQLALCHEMY_DATABASE_URI = _binding.getDBURL(Config.BINDING_FOLDER)
         else:
             ##SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
-            SQLALCHEMY_DATABASE_URI = 'sqlite:///tmp/data.sqlite'
+            SQLALCHEMY_DATABASE_URI = 'sqlite+pysqlite:///tmp/data.sqlite'
 
 
 class TestingConfig(Config):
