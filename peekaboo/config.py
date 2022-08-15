@@ -42,7 +42,6 @@ class Binding:
             if i >= 4:
                 self.SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{self.USERNAME}:{self.PASSWORD}@{self.HOST}:{self.PORT}/{self.DATABASE}"
                 print('Binding DB URI: {0}'.format(self.SQLALCHEMY_DATABASE_URI), file=sys.stdout)
-
                 return self.SQLALCHEMY_DATABASE_URI
             else:
                 return None

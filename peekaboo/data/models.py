@@ -180,7 +180,7 @@ class JSONSerializer(json.JSONEncoder):
         return super(JSONSerializer, self).encode(
             self.date_insensitive_encode(obj))
 
-
+print('DB URI: {0}'.format(app.config["SQLALCHEMY_DATABASE_URI"]), file=sys.stdout)
 print('Create DB', file=sys.stdout)
 with app.app_context():
     db.create_all()

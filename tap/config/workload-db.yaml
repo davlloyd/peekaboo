@@ -9,7 +9,7 @@ spec:
   params:
   - name: annotations
     value:
-      autoscaling.knative.dev/min-scale: "10"
+      autoscaling.knative.dev/min-scale: "1"
       autoscaling.knative.dev/max-scale: "50"
       autoscaling.knative.dev/scale-down-delay: "2s"
       autoscaling.knative.dev/initial-scale: "1"
