@@ -23,7 +23,7 @@ spec:
       ref:
         branch: main
   serviceClaims:
-    - name: peekaboo-db
+    - name: peekaboo-binding
       ref:
         apiVersion: v1
         kind: Secret
