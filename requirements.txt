@@ -5,3 +5,8 @@ flask_migrate
 pymysql
 mysqldbmodel
 pysqlite3
+click
+itsdangerous
+Jinja2
+MarkupSafe
+Werkzeug
