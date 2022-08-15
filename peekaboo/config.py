@@ -78,7 +78,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     ENV = 'development'
     if Config.SQLALCHEMY_DATABASE_URI is None:
-        print('Binding folder: {0}'.join(Config.BINDING_FOLDER))
+        print('Binding folder: {0}'.format(Config.BINDING_FOLDER))
         if path.exists(Config.BINDING_FOLDER):
             _binding = Binding()
             SQLALCHEMY_DATABASE_URI = _binding.getDBURL(Config.BINDING_FOLDER)
