@@ -55,7 +55,7 @@ class Config:
     WORKDIR = basedir
     SERVICE_BINDING = 'peekaboo-binding'
     BINDING_ASSIGNED = False
-    BINDING_FOLDER = WORKDIR + "/bindings/" + SERVICE_BINDING
+    BINDING_FOLDER = "/bindings/" + SERVICE_BINDING
     ENV = 'unset'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = os.environ.get('DB_TRACK_MODIFICATIONS') or False
@@ -78,8 +78,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     ENV = 'development'
     if Config.SQLALCHEMY_DATABASE_URI is None:
-        _dir = os.listdir('/')
-        print('Root folder content: {0}'.format(_dir))
+        print('Root folder content: {0}'.format(os.listdir('/')))
         print('Binding folder: {0}'.format(Config.BINDING_FOLDER))
         if path.exists(Config.BINDING_FOLDER):
             _binding = Binding()
