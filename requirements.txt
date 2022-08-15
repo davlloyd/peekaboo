@@ -4,4 +4,5 @@ flask_bootstrap
 flask_migrate
 pymysql
 mysqldbmodel
-pysqlite3
+libsqlite3-0
+libsqlite3-dev
