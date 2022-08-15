@@ -2,8 +2,6 @@ from email.header import Header
 from flask import jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-
-from pyparsing import alphanums
 from peekaboo import db, app
 from sqlalchemy.dialects.mysql import insert
 from sqlalchemy.exc import IntegrityError
@@ -100,7 +98,7 @@ class Headers(db.Model):
     name = db.Column(db.Text)
     value = db.Column(db.Text)
     request_id = db.Column(db.Integer, db.ForeignKey('requests.id'))
-tanzu app workload list -n alphanums
+
     def add(self):
         _id = None
         db.session.add(self)
