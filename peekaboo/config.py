@@ -78,6 +78,8 @@ class DevelopmentConfig(Config):
     DEBUG = True
     ENV = 'development'
     if Config.SQLALCHEMY_DATABASE_URI is None:
+        _dir = os.listdir('/')
+        print('Root folder content: {0}'.format(_dir))
         print('Binding folder: {0}'.format(Config.BINDING_FOLDER))
         if path.exists(Config.BINDING_FOLDER):
             _binding = Binding()
