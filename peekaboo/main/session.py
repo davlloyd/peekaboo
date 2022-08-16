@@ -135,5 +135,4 @@ class SessionData:
                         _value = open(valueFile)
                         self.BINDINGS[_key] = _value.read()
                         _value.close()
-        
-        return True
+            return True

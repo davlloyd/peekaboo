@@ -7,8 +7,8 @@
     <br>
     <center>
       <br>
-      Select Client: 
-      <select name="client" id="client" class="main-select" onchange="this.form.submit()">
+      Select Host: 
+      <select name="host" id="host" class="main-select" onchange="this.form.submit()">
         {% for _host in hosts %}
           {% if _host.id == hostid %}
             <option value={{ _host.id }} selected>{{ _host.hostname }}</option>
