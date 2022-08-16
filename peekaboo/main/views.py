@@ -3,7 +3,8 @@ import socket
 import os
 import time
 from datetime import datetime
-from flask import Blueprint, current_app, render_template, request, jsonify
+import flask
+from flask import Blueprint, current_app, render_template, request, jsonify, g
 from . import main,  session
 from peekaboo import db
 from peekaboo.data.models import Request, Host, Headers, OSEnvironment, WebEnvironment
@@ -13,7 +14,8 @@ _session = session.SessionData()
 
 @main.route('/', methods=["GET"])
 def home():
-    if not _session.LOADED:
+    #current_app.logger.info('X Request ID: %s', request.headers['X-Request-Id'])
+    if not _session.LOADED or g.get('request_id', None) is not None:
         _session.load()
 
     print("Views Request IP: {0}".format(request.remote_addr))

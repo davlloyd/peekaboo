@@ -51,6 +51,7 @@ class Request(db.Model):
     xff = db.Column(db.Text)
     xrealip = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    requestid = db.Column(db.Text)
     host_id = db.Column(db.Integer, db.ForeignKey('host.id'))
 
     def __repr__(self):

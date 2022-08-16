@@ -4,6 +4,7 @@ from os import path
 import this
 import sys
 from flask import current_app
+import uuid
 
 basedir = os.getcwd()
 
@@ -14,7 +15,7 @@ class Binding:
     PORT = 3306
     DATABASE = "db"
     SQLALCHEMY_DATABASE_URI = ""
- 
+
     def getDBURL(self, bindingFolder):
         print('Binding folder: {0}'.format(bindingFolder), file=sys.stdout)
 
@@ -51,6 +52,7 @@ class Binding:
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'secret'
+    REQUEST_ID_UNIQUE_VALUE_PREFIX = "pab-"
     WORKDIR = basedir
     ENV = 'unset'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
@@ -62,7 +64,9 @@ class Config:
     else:
         BINDING_ROOT = "/bindings/"
     BINDING_FOLDER = BINDING_ROOT + SERVICE_BINDING
-
+    if path.exists(BINDING_FOLDER):
+        _binding = Binding()
+        SQLALCHEMY_DATABASE_URI = _binding.getDBURL(BINDING_FOLDER)
 
     @staticmethod
     def init_app(app):
@@ -72,35 +76,21 @@ class Config:
 class ProductionConfig(Config):
     ENV = 'production'
     if Config.SQLALCHEMY_DATABASE_URI is None:
-        if path.exists(Config.BINDING_FOLDER):
-            _binding = Binding()
-            SQLALCHEMY_DATABASE_URI = _binding.getDBURL(Config.BINDING_FOLDER)
-        else:
-            SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://user@localhost/whatever'    
+        SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://user@localhost/whatever'    
 
 class DevelopmentConfig(Config):
     DEBUG = True
     ENV = 'development'
     if Config.SQLALCHEMY_DATABASE_URI is None:
-        print('Root folder content: {0}'.format(os.listdir('/')))
-        print('Binding folder: {0}'.format(Config.BINDING_FOLDER))
-        if path.exists(Config.BINDING_FOLDER):
-            _binding = Binding()
-            SQLALCHEMY_DATABASE_URI = _binding.getDBURL(Config.BINDING_FOLDER)
-        else:
-            ##SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
-            SQLALCHEMY_DATABASE_URI = 'sqlite+pysqlite:///tmp/data.sqlite'
+        SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 
 
 class TestingConfig(Config):
     TESTING = True
     ENV = 'testing'
     if Config.SQLALCHEMY_DATABASE_URI is None:
-        if path.exists(Config.BINDING_FOLDER):
-            _binding = Binding()
-            SQLALCHEMY_DATABASE_URI = _binding.getDBURL(Config.BINDING_FOLDER)
-        else:
-            SQLALCHEMY_DATABASE_URI = 'sqlite://'
+        SQLALCHEMY_DATABASE_URI = 'sqlite://'
+
 
 config = {
     'development': DevelopmentConfig,

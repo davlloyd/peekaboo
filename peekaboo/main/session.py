@@ -1,7 +1,10 @@
+from cmath import log
 import socket
 import os
 import platform
+import uuid
 from datetime import datetime
+import flask
 from flask import current_app, request
 from . import main
 from peekaboo import db, app
@@ -10,26 +13,31 @@ from peekaboo.data.models import Request, Host, OSEnvironment, Headers, WebEnvir
 class SessionData:
     LOADED = False
     FQDN = socket.getfqdn()
-    IPADDRESS = "Not Set"
+    IPADDRESS = "unset"
     HEADERS = {}
-    XFF = "Not Set"
+    XFF = "unset"
     WEB_ENVIRONMENT = {}
     OS_ENVIRONMENT = {}
-    OS_TYPE = "Not Set"
-    OS_VERSION = "Not Set"
-    XREALIP = "Not Set"
+    OS_TYPE = "unset"
+    OS_VERSION = "unset"
+    XREALIP = "unset"
     BINDINGFOUND = False
     BINDINGS = {}
     HOSTID = None
+    REQUESTID = "unset"
 
     # Load current runtime environment and session data
     def load(self):
         self.LOADED = True
-        print("Session Request IP: {0}".format(request.remote_addr))
+        ("Session Request IP: {0}".format(request.remote_addr))
         if request.remote_addr:
             self.IPADDRESS = request.remote_addr
         self.OS_TYPE = platform.system()
         self.OS_VERSION = platform.platform()
+        new_uuid = uuid.uuid4().hex[:10]
+        flask.g.request_id = new_uuid
+        self.REQUESTID = new_uuid
+        app.logger.info('request id: %s', new_uuid)
 
         self.get_headerdata()
         self.get_environment()
@@ -47,6 +55,7 @@ class SessionData:
             ipaddress=self.IPADDRESS,
             xff=self.XFF,
             xrealip=self.XREALIP,
+            requestid=self.REQUESTID,
             host_id=self.HOSTID)
         
         _requestid = session.add()
@@ -132,3 +141,4 @@ class SessionData:
                         self.BINDINGS[_key] = _value.read()
                         _value.close()
             return True
+
