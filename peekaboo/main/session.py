@@ -1,5 +1,6 @@
 import datetime
 from email.header import Header
+from genericpath import isfile
 import socket
 import os
 import platform
@@ -129,8 +130,9 @@ class SessionData:
                 self.BINDINGS["Binding"] = _file
                 for _key in os.listdir(bindingFolder):
                     valueFile = bindingFolder + "/" + _key
-                    _value = open(valueFile)
-                    self.BINDINGS[_key] = _value.read()
-                    _value.close()
+                    if os.isfile(valueFile):
+                        _value = open(valueFile)
+                        self.BINDINGS[_key] = _value.read()
+                        _value.close()
         
         return True
