@@ -1,11 +1,6 @@
-import datetime
-from email.header import Header
-from genericpath import isfile
 import socket
 import os
 import platform
-import sys
-import time
 from datetime import datetime
 from flask import current_app, request
 from . import main
@@ -30,6 +25,7 @@ class SessionData:
     # Load current runtime environment and session data
     def load(self):
         self.LOADED = True
+        print("Session Request IP: {0}".format(request.remote_addr))
         if request.remote_addr:
             self.IPADDRESS = request.remote_addr
         self.OS_TYPE = platform.system()

@@ -16,6 +16,7 @@ def home():
     if not _session.LOADED:
         _session.load()
 
+    print("Views Request IP: {0}".format(request.remote_addr))
     _requests = Request.get_dailycount_json()
 
     return render_template('home.html', requestip=_session.IPADDRESS, hostname=_session.FQDN, ostype=_session.OS_TYPE, 
