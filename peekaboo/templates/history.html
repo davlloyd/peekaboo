@@ -9,11 +9,11 @@
       <br>
       Select Client: 
       <select name="client" id="client" class="main-select" onchange="this.form.submit()">
-        {% for _client in clients %}
-          {% if _client.id == clientid %}
-            <option value={{ _client.id }} selected>{{ _client.hostname }}</option>
+        {% for _host in hosts %}
+          {% if _host.id == hostid %}
+            <option value={{ _host.id }} selected>{{ _host.hostname }}</option>
           {% else %}
-            <option value={{ _client.id }}>{{ _client.hostname }}</option>
+            <option value={{ _host.id }}>{{ _host.hostname }}</option>
           {% endif %}
         {% endfor %}
       </select>

@@ -11,10 +11,12 @@ import sys
 
 print('Define DB Models', file=sys.stdout)
 
-class Client(db.Model):
-    __tablename__ = 'client'
+class Host(db.Model):
+    __tablename__ = 'host'
     id = db.Column(db.Integer, primary_key=True)
     hostname = db.Column(db.String(64), unique=True, index=True)
+    ostype = db.Column(db.Text)
+    osversion = db.Column(db.Text)
 
     def __repr__(self):
         return self.id
@@ -27,13 +29,13 @@ class Client(db.Model):
         except IntegrityError:
             db.session.rollback()
 
-        _resp = Client.query.with_entities(Client.id).filter(Client.hostname == self.hostname).first()
+        _resp = Host.query.with_entities(Host.id).filter(Host.hostname == self.hostname).first()
         _id = _resp["id"]
 
         return _id
 
     def get_id(self):
-        _resp = Client.query.with_entities(Client.id).filter(Client.hostname == self.hostname).first()
+        _resp = Host.query.with_entities(Host.id).filter(Host.hostname == self.hostname).first()
         if(_resp is None):
             _id = self.add()
         else:
@@ -49,7 +51,7 @@ class Request(db.Model):
     xff = db.Column(db.Text)
     xrealip = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    client_id = db.Column(db.Integer, db.ForeignKey('client.id'))
+    host_id = db.Column(db.Integer, db.ForeignKey('host.id'))
 
     def __repr__(self):
         return self.id
@@ -70,8 +72,8 @@ class Request(db.Model):
         return _request
 
     @staticmethod
-    def get_history(clientid):
-        _history = Request.query.filter(Request.client_id == clientid).all()
+    def get_history(hostid):
+        _history = Request.query.filter(Request.host_id == hostid).all()
         return _history
 
     @staticmethod

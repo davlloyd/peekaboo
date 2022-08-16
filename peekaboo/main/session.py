@@ -2,12 +2,14 @@ import datetime
 from email.header import Header
 import socket
 import os
+import platform
+import sys
 import time
 from datetime import datetime
 from flask import current_app, request
 from . import main
 from peekaboo import db, app
-from peekaboo.data.models import Request, Client, OSEnvironment, Headers, WebEnvironment
+from peekaboo.data.models import Request, Host, OSEnvironment, Headers, WebEnvironment
 
 class SessionData:
     LOADED = False
@@ -17,16 +19,20 @@ class SessionData:
     XFF = "Not Set"
     WEB_ENVIRONMENT = {}
     OS_ENVIRONMENT = {}
+    OS_TYPE = "Not Set"
+    OS_VERSION = "Not Set"
     XREALIP = "Not Set"
     BINDINGFOUND = False
     BINDINGS = {}
-    CLIENTID = None
+    HOSTID = None
 
     def load(self):
         self.LOADED = True
         if request.remote_addr:
             self.IPADDRESS = request.remote_addr
-        
+        self.OS_TYPE = platform.system()
+        self.OS_VERSION = platform.platform()
+
         self.get_headerdata()
         self.get_environment()
         self.get_bindings()
@@ -35,15 +41,15 @@ class SessionData:
     # Commit data from web session to the database 
     def store_session(self):
         # Commit key client data vie CLient model
-        current = Client(hostname=self.FQDN)
-        self.CLIENTID=current.get_id()
+        current = Host(hostname=self.FQDN, ostype=self.OS_TYPE, osversion=self.OS_VERSION)
+        self.HOSTID=current.get_id()
         
         # Save request data within Request class model
         session = Request(
             ipaddress=self.IPADDRESS,
             xff=self.XFF,
             xrealip=self.XREALIP,
-            client_id=self.CLIENTID)
+            host_id=self.HOSTID)
         
         _requestid = session.add()
 
@@ -115,11 +121,11 @@ class SessionData:
 
 
     def get_bindings(self):
-        currentDir = os.getcwd()
-        if os.path.exists("bindings"):
+
+        if os.path.exists(app.config["BINDING_ROOT"]):
             self.BINDINGFOUND = True
-            for _file in os.listdir('bindings'):
-                bindingFolder = currentDir + "/bindings/" + _file
+            for _file in os.listdir(app.config["BINDING_ROOT"]):
+                bindingFolder = app.config["BINDING_ROOT"] + _file
                 self.BINDINGS["Binding"] = _file
                 for _key in os.listdir(bindingFolder):
                     valueFile = bindingFolder + "/" + _key

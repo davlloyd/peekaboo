@@ -52,12 +52,17 @@ class Binding:
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'secret'
     WORKDIR = basedir
-    SERVICE_BINDING = 'peekaboo-binding'
-    BINDING_ASSIGNED = False
-    BINDING_FOLDER = "/bindings/" + SERVICE_BINDING
     ENV = 'unset'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = os.environ.get('DB_TRACK_MODIFICATIONS') or False
+    SERVICE_BINDING = os.environ.get('BINDING_NAME') or 'peekaboo-binding'
+    BINDING_ASSIGNED = False
+    if os.path.exists("bindings"):
+        BINDING_ROOT = "bindings/"
+    else:
+        BINDING_ROOT = "/bindings/"
+    BINDING_FOLDER = BINDING_ROOT + SERVICE_BINDING
+
 
     @staticmethod
     def init_app(app):
