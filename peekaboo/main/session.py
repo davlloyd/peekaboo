@@ -27,6 +27,7 @@ class SessionData:
     BINDINGS = {}
     HOSTID = None
 
+    # Load current runtime environment and session data
     def load(self):
         self.LOADED = True
         if request.remote_addr:
@@ -82,8 +83,8 @@ class SessionData:
 
         return True
 
+    # Get header details from current session
     def get_headerdata(self):
-        # Get general values
 
         if request.headers:
             for _entry in request.headers:
@@ -114,15 +115,15 @@ class SessionData:
 
         return True
 
-
+    # Get OS Environment details from current host
     def get_environment(self):
         for _key in os.environ:
             self.OS_ENVIRONMENT[_key] = os.environ[_key]
         return True
 
 
+    # Read any service bindings assigned to system
     def get_bindings(self):
-
         if os.path.exists(app.config["BINDING_ROOT"]):
             self.BINDINGFOUND = True
             for _file in os.listdir(app.config["BINDING_ROOT"]):
@@ -130,7 +131,7 @@ class SessionData:
                 self.BINDINGS["Binding"] = _file
                 for _key in os.listdir(bindingFolder):
                     valueFile = bindingFolder + "/" + _key
-                    if os.isfile(valueFile):
+                    if os.path.isfile(valueFile):
                         _value = open(valueFile)
                         self.BINDINGS[_key] = _value.read()
                         _value.close()
