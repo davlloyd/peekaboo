@@ -8,7 +8,7 @@ metadata:
 spec:
   params:
   - name: clusterBuilder
-    value: full
+    value: default
   - name: annotations
     value:
       autoscaling.knative.dev/min-scale: "1"
@@ -21,7 +21,7 @@ spec:
       autoscaling.knative.dev/target: "60"
   source:
     git:
-      url: https://github.com/davlloyd/clientcapture-python
+      url: https://github.com/davlloyd/peekaboo
       ref:
         branch: main
   serviceClaims:

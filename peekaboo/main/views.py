@@ -78,6 +78,17 @@ def history_request(requestid):
 
     return render_template('history_details.html', request=_request[0], requestid=requestid, headers=_headers, osvars=_osvars, webvars=_webvars)
 
+# Status query page, can also be used for the benchmark testing 
+@main.route('/status', methods=["GET"])
+def status():
+    _status = {
+        "health": "ok",
+        "environment": current_app.config['ENV'],
+        "database": current_app.config['SQLALCHEMY_DATABASE_URI'],
+        "binding": current_app.config['BINDING_ASSIGNED']
+    }
+    return _status
+
 
 # Persist user session data to DB and make accessible
 def loadUserData():
