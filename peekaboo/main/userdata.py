@@ -5,7 +5,7 @@ import platform
 import uuid
 from datetime import datetime
 import flask
-from flask import current_app, request
+from flask import current_app, request, g
 from . import main
 from peekaboo import db, app
 from peekaboo.data.models import Request, Host, OSEnvironment, Headers, WebEnvironment
@@ -35,7 +35,6 @@ class SessionData:
         self.OS_TYPE = platform.system()
         self.OS_VERSION = platform.platform()
         new_uuid = uuid.uuid4().hex[:10]
-        flask.g.request_id = new_uuid
         self.REQUESTID = new_uuid
         app.logger.info('request id: %s', new_uuid)
 

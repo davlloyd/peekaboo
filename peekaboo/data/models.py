@@ -12,7 +12,7 @@ import sys
 print('Define DB Models', file=sys.stdout)
 
 class Host(db.Model):
-    __tablename__ = 'host'
+    __tablename__ = 'hosts'
     id = db.Column(db.Integer, primary_key=True)
     hostname = db.Column(db.String(64), unique=True, index=True)
     ostype = db.Column(db.Text)
@@ -52,7 +52,7 @@ class Request(db.Model):
     xrealip = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     requestid = db.Column(db.Text)
-    host_id = db.Column(db.Integer, db.ForeignKey('host.id'))
+    host_id = db.Column(db.Integer, db.ForeignKey('hosts.id'))
 
     def __repr__(self):
         return self.id

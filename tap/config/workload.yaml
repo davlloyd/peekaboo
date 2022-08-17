@@ -7,6 +7,8 @@ metadata:
     app.kubernetes.io/part-of: clientcapture
 spec:
   params:
+  - name: clusterBuilder
+    value: full
   - name: annotations
     value:
       autoscaling.knative.dev/min-scale: "1"
