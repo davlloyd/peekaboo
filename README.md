@@ -14,6 +14,8 @@ feature set support and enablement as well as network policies.
 Looks for header values such as HTTP_X_REAL_IP and X_FORWARDER_FOR as well as allows full request environment
 and header data to be displayed
 
+There is also a /status form for using for load simulation and status querying from LB services
+
 ### Code Overview
 Written in Python3 (requires minimum 3.10 due to the use of the case statement) with the Flask web framework and SQLAchemy for DB interaciton. Utilises either SqLite or MySQL for data persistence. The default is to use sqlite but to use mysql the URL can either by passed via environment variable **DATABASE_URL** or via a service binding associated to the K8s deployment (service binding default name is **peekaboo-binding**)
 
@@ -21,3 +23,7 @@ Written in Python3 (requires minimum 3.10 due to the use of the case statement) 
 
 
 
+### To Do
+- Put a paging control on the history tab
+- Create tests for TAP supplychain
+- Tart up the chart object

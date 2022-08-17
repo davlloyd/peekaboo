@@ -5,7 +5,7 @@
     <h2>What Your Browser Says</h2>
     <br>
     <center>
-        <table width="500" border="1px">
+        <table width="700" border="1px">
             <thead>
                 <tr align=left>
                     <th>Source</th>
@@ -17,7 +17,10 @@
                     <td>Session ID</td>
                     <td>{{ fingerprint }}</td>
                 </tr>
-
+                <tr>
+                    <td>Cookie Data</td>
+                    <td id="cookiedata"></td>
+                </tr>
 
             </tbody>
         </table>
@@ -29,7 +32,7 @@
 
     <script>
 
-        var _var = {{ dailyhits|tojson }}
+        let _var = {{ dailyhits|tojson }}
         _var = JSON.parse(_var)
         const ctx = document.getElementById('demandchart').getContext('2d');
         const myChart = new Chart(ctx, {
@@ -56,6 +59,24 @@
             }
         });
 
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for(let i = 0; i <ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                   return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+        
+        let _cookiedata = getCookie('session').split('.')[0]
+        document.getElementById('cookiedata').innerText = atob(_cookiedata)
     </script>
 
 {% endblock %}

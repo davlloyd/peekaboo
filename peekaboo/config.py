@@ -52,7 +52,9 @@ class Binding:
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'secret'
+    SESSION_COOKIE_HTTPONLY = False
     REQUEST_ID_UNIQUE_VALUE_PREFIX = "pab-"
+    PERMANENT_SESSION_LIFETIME = 600
     WORKDIR = basedir
     ENV = 'unset'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
