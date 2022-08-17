@@ -18,9 +18,14 @@ def home():
     _session = loadUserData()
     _requests = Request.get_dailycount_json()
 
-    return render_template('home.html', requestip=_session.IPADDRESS, hostname=_session.FQDN, ostype=_session.OS_TYPE, 
-                                        osversion=_session.OS_VERSION, env=current_app.config['ENV'], 
-                                        dailyhits=_requests, fingerprint=_session.REQUESTID)
+    return render_template('home.html', dailyhits=_requests, fingerprint=_session.REQUESTID)
+
+@main.route('/node', methods=["GET"])
+def node():
+    _session = loadUserData()
+
+    return render_template('node.html', requestip=_session.IPADDRESS, hostname=_session.FQDN, ostype=_session.OS_TYPE, 
+                                        osversion=_session.OS_VERSION, env=current_app.config['ENV'])
 
 @main.route('/headers', methods=["GET"])
 def headers():

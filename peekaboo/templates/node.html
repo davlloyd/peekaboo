@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h2>Node Details</h2>
+    <br>
+    <center>
+        <table width="500" border="1px">
+            <thead>
+                <tr align=left>
+                    <th>Source</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Node Hostname</td>
+                    <td>{{ hostname }}</td>
+                </tr>
+
+                <tr>
+                    <td>Node OS Type</td>
+                    <td>{{ ostype }}</td>
+                </tr>
+
+                <tr>
+                    <td>Node OS Version</td>
+                    <td>{{ osversion }}</td>
+                </tr>
+
+                <tr>
+                    <td>Request Client IP</td>
+                    <td>{{ requestip }}</td>
+                </tr>
+
+                <tr>
+                    <td>Environment</td>
+                    <td>{{ env }}</td>
+                </tr>
+
+            </tbody>
+        </table>
+
+
+    </center>
+
+
+{% endblock %}
