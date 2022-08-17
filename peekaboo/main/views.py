@@ -13,12 +13,12 @@ _sessions = {}
 
 @main.route('/', methods=["GET"])
 def home():
-    current_app.logger.info("Views Request IP: %s",request.remote_addr)
+    current_app.logger.info("Views Request IP: %s",request.access_route[-1])
 
     _session = loadUserData()
     _requests = Request.get_dailycount_json()
 
-    return render_template('home.html', dailyhits=_requests, fingerprint=_session.REQUESTID)
+    return render_template('home.html', dailyhits=_requests, fingerprint=_session.REQUESTID, requestip=_session.IPADDRESS)
 
 @main.route('/node', methods=["GET"])
 def node():
