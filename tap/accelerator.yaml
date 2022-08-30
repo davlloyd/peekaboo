@@ -1,10 +1,10 @@
 apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
 kind: Accelerator
 metadata:
-  name: web-client-report
-  namespace: accelerator-system
+  name: 
+  namespace: peekaboo
 spec:
   git:
-    url: https://github.com/davlloyd/clientcapture-python
+    url: https://github.com/davlloyd/peekaboo
     ref:
       branch: main

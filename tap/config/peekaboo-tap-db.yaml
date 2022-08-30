@@ -10,11 +10,22 @@ stringData:
   host: peekaboo-db
   port: "3306"
   database: peekaboo
-  # demo credentials
-  username: user
-  password: pass
+  username: someuser
+  password: setdbpasswordhere
   
-  
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: peekaboo-db-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+ 
 ---
 apiVersion: v1
 kind: Service
@@ -43,7 +54,6 @@ spec:
       labels:
         app: peekaboo-db
     spec:
-      # no persistance configured, the database will be reset when the pod terminates
       containers:
       - image: mariadb:10.5
         name: mysql
@@ -64,7 +74,10 @@ spec:
               name: peekaboo-db
               key: database
         - name: MYSQL_ROOT_PASSWORD
-          value: root
+          valueFrom:
+            secretKeyRef:
+              name: peekaboo-db
+              key: password
         ports:
         - containerPort: 3306
           name: mysql
@@ -77,3 +90,10 @@ spec:
         startupProbe:
           tcpSocket:
             port: mysql
+        volumeMounts:
+        - name: db-data
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: db-data
+        persistentVolumeClaim:
+          claimName: peekaboo-db-data

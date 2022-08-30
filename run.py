@@ -1,6 +1,5 @@
 import os
 import sys
-from flask import current_app
 from peekaboo import create_app
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')

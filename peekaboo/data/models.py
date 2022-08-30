@@ -1,15 +1,14 @@
-from email.header import Header
 from flask import jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from peekaboo import db, app
-from sqlalchemy.dialects.mysql import insert
+##from sqlalchemy.dialects.mysql import insert
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.inspection import inspect
 import json
 import sys
 
-print('Define DB Models', file=sys.stdout)
+app.logger.info('Define DB Models')
 
 class Host(db.Model):
     __tablename__ = 'hosts'
@@ -78,7 +77,7 @@ class Request(db.Model):
         return _history
 
     @staticmethod
-    def get_dailycount_json():
+    def get_dailycount_json() -> json:
         # Determining the structure between sqllite and mysql as schema context in queries vary
         _sql = "SELECT DATE(`timestamp`) AS 'date',COUNT(*) AS 'sessions' "
         _sql += "FROM requests "
@@ -167,25 +166,11 @@ class OSEnvironment(db.Model):
         return _list
 
 
-class JSONSerializer(json.JSONEncoder):
-    @staticmethod
-    def convert_if_date(_date):
-        if isinstance(_date, datetime.date):
-            return _date.strftime('%Y-%m-%d')
-        return _date
-
-    def date_insensitive_encode(self, obj):
-        if isinstance(obj, dict):
-            return {self.convert_if_date(k): v for k, v in obj.items()}
-        return obj
-
-    def encode(self, obj):
-        return super(JSONSerializer, self).encode(
-            self.date_insensitive_encode(obj))
 
 
-print('DB URI: {0}'.format(app.config['SQLALCHEMY_DATABASE_URI']), file=sys.stdout)
-print('Create DB', file=sys.stdout)
+app.logger.info('DB URI: %s',app.config['SQLALCHEMY_DATABASE_URI'])
+app.logger.info('Create DB')
 with app.app_context():
     db.create_all()
     db.session.commit()
+

@@ -1,15 +1,15 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: clientcapture
-  description: Web Service to report client and backend data
+  name: peekaboo
+  description: Web Service to report web client and backend data
   tags:
     - app-accelerator
     - python
     - web
     - tanzu
   annotations:
-    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=clientcapture'
+    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=peekaboo'
 spec:
   type: service
   lifecycle: experimental

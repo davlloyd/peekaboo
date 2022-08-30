@@ -3,7 +3,6 @@ import os
 from os import path
 import this
 import sys
-from flask import current_app
 import uuid
 
 basedir = os.getcwd()
