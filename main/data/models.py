@@ -1,10 +1,10 @@
 from flask import jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from peekaboo import db, app
-##from sqlalchemy.dialects.mysql import insert
+from main import db, app
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.inspection import inspect
+from sqlalchemy import text
 import json
 import sys
 
@@ -17,10 +17,16 @@ class Host(db.Model):
     ostype = db.Column(db.Text)
     osversion = db.Column(db.Text)
 
+    def __init__(self, hostname: str, ostype: str, osversion: str):
+        self.hostname = hostname
+        self.ostype = ostype
+        self.osversion = osversion
+        self.id = self.add()
+
     def __repr__(self):
         return self.id
 
-    def add(self):
+    def add(self) -> int:
         _id = None
         db.session.add(self)
         try:
@@ -28,17 +34,21 @@ class Host(db.Model):
         except IntegrityError:
             db.session.rollback()
 
-        _resp = Host.query.with_entities(Host.id).filter(Host.hostname == self.hostname).first()
-        _id = _resp["id"]
+        if self.id is None:
+            _resp = Host.query.with_entities(Host.id).filter(Host.hostname == self.hostname).first()
+            _id = _resp.id
+        else:
+            _id = self.id
 
         return _id
 
+
     def get_id(self):
         _resp = Host.query.with_entities(Host.id).filter(Host.hostname == self.hostname).first()
-        if(_resp is None):
+        if(_resp.id is None):
             _id = self.add()
         else:
-            _id = _resp["id"]
+            _id = _resp.id
         return _id
 
 
@@ -82,16 +92,17 @@ class Request(db.Model):
         _sql = "SELECT DATE(`timestamp`) AS 'date',COUNT(*) AS 'sessions' "
         _sql += "FROM requests "
         _sql += "GROUP BY DATE(`timestamp`);"
-        _report = db.engine.execute(_sql)
 
         _json = []
-        for _row in _report:
-            if app.config['SQLALCHEMY_DATABASE_URI'].startswith('mysql'):
-                _date = _row.date.isoformat()
-            else:
-                _date = _row.date
-            _json.append({'Date': _date,
-                          'Sessions': _row.sessions})
+        with db.engine.connect() as connection:
+            _report = connection.execute(text(_sql))
+
+            for _row in _report:
+                if app.config['SQLALCHEMY_DATABASE_URI'].startswith('mysql'):
+                    _date = _row.date.isoformat()
+                else:
+                    _date = _row.date
+                _json.append({'Date': _date, 'Sessions': _row.sessions})
    
         return json.dumps(_json)
 

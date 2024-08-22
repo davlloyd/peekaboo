@@ -6,8 +6,8 @@ from datetime import datetime
 import flask
 from flask import Blueprint, current_app, render_template, request, jsonify, session
 from . import main, userdata
-from peekaboo import db
-from peekaboo.data.models import Request, Host, Headers, OSEnvironment, WebEnvironment
+from main import db
+from main.data.models import Request, Host, Headers, OSEnvironment, WebEnvironment
 
 _sessions = {}
 
@@ -55,8 +55,7 @@ def bindings():
     return render_template('bindings.html', currentDir=os.getcwd(), 
                                     bindingFound=_session.BINDINGFOUND, bindingvals=_session.BINDINGS, 
                                     dburl=current_app.config['SQLALCHEMY_DATABASE_URI'], 
-                                    bindingRoot=current_app.config['BINDING_ROOT'], 
-                                    serviceBinding=current_app.config['SERVICE_BINDING'])
+                                    bindingRoot=current_app.config['BINDING_ROOT'])
 
 @main.route('/history', methods=["GET", "POST"])
 def history():

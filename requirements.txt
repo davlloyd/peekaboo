@@ -2,4 +2,5 @@ Flask
 flask_sqlalchemy
 pymysql
 mysqldbmodel
-pysqlite3
+pyservicebinding
+python-dotenv

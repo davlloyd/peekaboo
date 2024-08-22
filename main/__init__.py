@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from peekaboo import config
+from main import config
 import sys
 
 db = SQLAlchemy()
@@ -12,7 +12,7 @@ def create_app(config_name):
     db.init_app(app)
 
     app.logger.info('Import blueprints')
-    from peekaboo.main import main as main_blueprint
+    from main.controllers import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
     return app

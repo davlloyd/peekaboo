@@ -7,8 +7,8 @@ from datetime import datetime
 import flask
 from flask import current_app, request, g
 from . import main
-from peekaboo import db, app
-from peekaboo.data.models import Request, Host, OSEnvironment, Headers, WebEnvironment
+from main import db, app
+from main.data.models import Request, Host, OSEnvironment, Headers, WebEnvironment
 
 class SessionData:
     LOADED = False
@@ -130,14 +130,14 @@ class SessionData:
     def get_bindings(self):
         if os.path.exists(app.config["BINDING_ROOT"]):
             self.BINDINGFOUND = True
-            for _file in os.listdir(app.config["BINDING_ROOT"]):
-                bindingFolder = app.config["BINDING_ROOT"] + _file
-                self.BINDINGS["Binding"] = _file
-                for _key in os.listdir(bindingFolder):
-                    valueFile = bindingFolder + "/" + _key
-                    if os.path.isfile(valueFile):
-                        _value = open(valueFile)
-                        self.BINDINGS[_key] = _value.read()
-                        _value.close()
+            # for _file in os.listdir(app.config["BINDING_ROOT"]):
+            #     bindingFolder = app.config["BINDING_ROOT"] + _file
+            #     self.BINDINGS["Binding"] = _file
+            #     for _key in os.listdir(bindingFolder):
+            #         valueFile = bindingFolder + "/" + _key
+            #         if os.path.isfile(valueFile):
+            #             _value = open(valueFile)
+            #             self.BINDINGS[_key] = _value.read()
+            #             _value.close()
             return True
 
